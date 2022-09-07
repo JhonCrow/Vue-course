@@ -1,8 +1,8 @@
 <template>
     <h1>{{ customTitle }}</h1>
-
+    <p data-tstid="counter">{{ counter}}</p>
     <p>{{ counter }} <sup>2</sup> = {{ squareCounter }}</p>
-    <div>
+    <div class="buton-container">
         <button v-on:click="increase">+1</button>
         <button v-on:click="decrease">-1</button>
     </div>
@@ -42,7 +42,7 @@ export default {
             return this.counter * this.counter
         },
         customTitle() {
-            return this.title || "Counter"
+            return this.title || "Counter!"
         }
     }
 }

@@ -9,8 +9,8 @@
 
         <div v-if="isValidQuestion">
             <h2>{{question}}</h2>
-            <h1>{{answer == "yes" ? "Si" : "No" }}</h1>
-    
+            <h1>{{answer }}</h1>
+
         </div>
     </div>
 </template>
@@ -19,26 +19,34 @@
 <script>
 export default {
 
-    data(){
+    data() {
         return {
-            question:null,
+            question: null,
             answer: null,
-            img:null,
+            img: null,
             isValidQuestion: false,
         }
     },
-    methods:{
-        async getAnswer(){
-            this.anwer = "Pensando"
-            const {answer, image} = await fetch("https://yesno.wtf/api").then(r => r.json())
-            this.answer = answer 
-            this.img = image
+    methods: {
+        async getAnswer() {
+            try {
+                this.anwer = "Pensando"
+                const { answer, image } = await fetch("https://yesno.wtf/api").then(r => r.json())
+                this.answer = answer == "yes" ? "Si" : "No"
+                this.img = image
+
+            } catch (error) {
+                console.log('IndecisionComponent: ', error)
+                this.answer = 'No se pudo cargar el API'
+                this.img = null
+            }
         }
     },
-    watch:{
-        question(value, oldValue){
+    watch: {
+        question(value, oldValue) {
             this.isValidQuestion = false
-            if(!value.includes("?"))return
+            console.log({ value })
+            if (!value.includes("?")) return
             this.getAnswer()
             this.isValidQuestion = true
         }
